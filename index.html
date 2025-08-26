@@ -2,16 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My To-Do App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+    }
+    .todo-container {
+      width: 300px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #f4f4f4;
+      padding: 10px;
+      margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    button {
+      margin-left: 5px;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .complete-btn { background: #4CAF50; color: white; }
+    .delete-btn { background: #f44336; color: white; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>My To-Do List</h1>
-    <input id="taskInput" type="text" placeholder="Enter a task">
-    <button onclick="addTask()">Add</button>
-    <ul id="taskList"></ul>
+  <div class="todo-container">
+    <h2>Todo App</h2>
+    <input type="text" id="todo-input" placeholder="Enter task...">
+    <button onclick="addTodo()">Add</button>
+    <ul id="todo-list"></ul>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    function addTodo() {
+      const input = document.getElementById("todo-input");
+      const task = input.value.trim();
+      if (task === "") return;
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>${task}</span>
+        <div>
+          <button class="complete-btn" onclick="completeTask(this)">✔</button>
+          <button class="delete-btn" onclick="deleteTask(this)">✖</button>
+        </div>
+      `;
+      document.getElementById("todo-list").appendChild(li);
+      input.value = "";
+    }
+
+    function completeTask(btn) {
+      const li = btn.parentElement.parentElement;
+      li.querySelector("span").classList.toggle("completed");
+    }
+
+    function deleteTask(btn) {
+      const li = btn.parentElement.parentElement;
+      li.remove();
+    }
+  </script>
 </body>
 </html>
