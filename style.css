@@ -1,4 +1,7 @@
-body {
+
+button:hover {
+  background: #0056b3;
+}body {
   font-family: Arial, sans-serif;
   background: #f0f2f5;
   display: flex;
@@ -35,9 +38,6 @@ button {
   border-radius: 6px;
 }
 
-button:hover {
-  background: #0056b3;
-}
 
 ul {
   margin-top: 15px;
