@@ -9,7 +9,7 @@ body {
   margin: 0;
 }
 .container {
-  background: #fff;
+ 
   padding: 25px;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -45,7 +45,7 @@ ul {
 }
 
 li {
-  background: #f9f9f9;
+ 
   padding: 12px 15px;
   margin-bottom: 10px;
   display: flex;
@@ -61,7 +61,7 @@ li {
 }
 
 .complete-btn {
-  background: #4CAF50;
+ 
   color: white;
 }
 
