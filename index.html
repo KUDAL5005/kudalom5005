@@ -95,24 +95,6 @@
       background: #ef4444;
       color: white;
     }
-
-    #clear-btn {
-      width: 100%;
-      margin-top: 15px;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #dc2626;
-      color: white;
-      cursor: pointer;
-    }
-
-    #counter {
-      margin-top: 10px;
-      text-align: center;
-      font-size: 14px;
-      color: #374151;
-    }
   </style>
 </head>
 <body>
@@ -123,24 +105,16 @@
       <button id="add-btn">Add</button>
     </div>
     <ul id="todo-list"></ul>
-    <p id="counter">0 tasks pending</p>
-    <button id="clear-btn">Clear All Tasks</button>
   </div>
 
   <script>
     const todoInput = document.getElementById("todo-input");
     const addBtn = document.getElementById("add-btn");
     const todoList = document.getElementById("todo-list");
-    const clearBtn = document.getElementById("clear-btn");
-    const counter = document.getElementById("counter");
 
-    // Load saved todos on page load
-    document.addEventListener("DOMContentLoaded", () => {
-      loadTodos();
-      updateCounter();
-    });
+    // Load saved todos
+    document.addEventListener("DOMContentLoaded", loadTodos);
     addBtn.addEventListener("click", addTodo);
-    clearBtn.addEventListener("click", clearAll);
 
     function addTodo() {
       const taskText = todoInput.value.trim();
@@ -149,7 +123,6 @@
       createTodoElement(taskText, false);
       saveTodos();
       todoInput.value = "";
-      updateCounter();
     }
 
     function createTodoElement(text, completed) {
@@ -170,7 +143,6 @@
       completeBtn.onclick = () => {
         li.classList.toggle("completed");
         saveTodos();
-        updateCounter();
       };
 
       const deleteBtn = document.createElement("button");
@@ -179,7 +151,6 @@
       deleteBtn.onclick = () => {
         li.remove();
         saveTodos();
-        updateCounter();
       };
 
       btnContainer.appendChild(completeBtn);
@@ -203,19 +174,6 @@
     function loadTodos() {
       const saved = JSON.parse(localStorage.getItem("todos")) || [];
       saved.forEach(todo => createTodoElement(todo.text, todo.completed));
-    }
-
-    function clearAll() {
-      todoList.innerHTML = "";
-      localStorage.removeItem("todos");
-      updateCounter();
-    }
-
-    function updateCounter() {
-      const total = document.querySelectorAll("#todo-list li").length;
-      const completed = document.querySelectorAll("#todo-list li.completed").length;
-      const pending = total - completed;
-      counter.textContent = ${pending} task${pending !== 1 ? "s" : ""} pending;
     }
   </script>
 </body>
