@@ -5,11 +5,12 @@
   box-sizing: border-box;
 }
 
-/* Black background */
+/* Make the whole screen black */
 html, body {
   height: 100%;
   margin: 0;
-  background-color: black !important;  /* Force black */
+  padding: 0;
+  background-color: black !important; /* Force black */
   color: white;
   font-family: Arial, sans-serif;
   display: flex;
@@ -17,9 +18,9 @@ html, body {
   align-items: center;
 }
 
-/* Todo container */
+/* Todo container (the box) */
 .todo-container {
-  background: #1a1a1a;       /* Dark grey instead of white */
+  background: #1a1a1a;  /* Dark grey instead of white */
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
@@ -31,54 +32,4 @@ html, body {
   text-align: center;
   margin-bottom: 20px;
   color: #00ffcc;
-}
-
-/* Input */
-.todo-input {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  outline: none;
-  margin-bottom: 15px;
-}
-
-/* Add button */
-.todo-button {
-  width: 100%;
-  padding: 10px;
-  background: #00ffcc;
-  color: black;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.todo-button:hover {
-  background: #00cc99;
-}
-
-/* Todo list */
-.todo-list {
-  list-style: none;
-  margin-top: 15px;
-}
-
-.todo-list li {
-  background: #333; /* Dark list items */
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-}
-
-/* Completed task */
-.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
 }
