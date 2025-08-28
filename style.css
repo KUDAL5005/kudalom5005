@@ -1,18 +1,28 @@
-/* Make full page background color */
-body {
-    background-color: #0d1b2a; /* Dark blue */
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Center the todo app box */
+/* Full screen gradient background */
+html, body {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);  
+  /* Dark blue gradient */
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Todo box */
 .container {
-    max-width: 400px;
-    margin: 80px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  width: 350px;
+  text-align: center;
 }
