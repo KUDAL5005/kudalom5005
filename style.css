@@ -5,22 +5,27 @@
   box-sizing: border-box;
 }
 
-/* Make the whole screen black */
+/* Full-page black background */
 html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
-  background-color: black !important; /* Force black */
+  background-color: #000000 !important;  /* Force full black */
   color: white;
   font-family: Arial, sans-serif;
+}
+
+/* Center container */
+body {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Todo container (the box) */
+/* Todo box */
 .todo-container {
-  background: #1a1a1a;  /* Dark grey instead of white */
+  background: #1a1a1a;   /* dark grey instead of white */
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
