@@ -40,43 +40,19 @@
     }
     .complete-btn { background: #4CAF50; color: white; }
     .delete-btn { background: #f44336; color: white; }
+    .delete-all-btn { background: #ff9800; color: white; margin-top: 10px; width: 100%; }
   </style>
 </head>
 <body>
   <div class="todo-container">
     <h2>Todo App</h2>
-    <input type="text" id="todo-input" placeholder="Enter task...">
-    <button onclick="addTodo()">Add</button>
-    <ul id="todo-list"></ul>
+    <input type="text" id="taskInput" placeholder="Enter task...">
+    <button onclick="addTask()">Add</button>
+    <button class="delete-all-btn" onclick="deleteAll()">Delete All</button>
+    <ul id="taskList"></ul>
   </div>
 
-  <script>
-    function addTodo() {
-      const input = document.getElementById("todo-input");
-      const task = input.value.trim();
-      if (task === "") return;
-
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <span>${task}</span>
-        <div>
-          <button class="complete-btn" onclick="completeTask(this)">✔</button>
-          <button class="delete-btn" onclick="deleteTask(this)">✖</button>
-        </div>
-      `;
-      document.getElementById("todo-list").appendChild(li);
-      input.value = "";
-    }
-
-    function completeTask(btn) {
-      const li = btn.parentElement.parentElement;
-      li.querySelector("span").classList.toggle("completed");
-    }
-
-    function deleteTask(btn) {
-      const li = btn.parentElement.parentElement;
-      li.remove();
-    }
-  </script>
+  <!-- link your script.js file -->
+  <script src="script.js"></script>
 </body>
 </html>
