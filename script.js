@@ -1,8 +1,12 @@
-// Load saved tasks on page load
+// Load saved tasks when page opens
 window.addEventListener("load", () => {
   const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
   savedTasks.forEach(task => renderTask(task.text, task.completed));
 });
+
+// Add button event
+document.getElementById("addBtn").addEventListener("click", addTask);
+document.getElementById("deleteAllBtn").addEventListener("click", deleteAll);
 
 function addTask() {
   const input = document.getElementById("taskInput");
@@ -48,4 +52,18 @@ function renderTask(taskText, isCompleted) {
 
 function deleteAll() {
   if (confirm("Are you sure you want to delete all tasks?")) {
-    document.get
+    document.getElementById("taskList").innerHTML = "";
+    localStorage.removeItem("tasks");
+  }
+}
+
+function saveTasks() {
+  const tasks = [];
+  document.querySelectorAll("#taskList li").forEach(li => {
+    tasks.push({
+      text: li.querySelector("span").textContent,
+      completed: li.querySelector("span").classList.contains("completed")
+    });
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
