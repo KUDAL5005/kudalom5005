@@ -95,6 +95,18 @@
       background: #ef4444;
       color: white;
     }
+
+    /* Delete all button */
+    #clear-all-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: none;
+      background: #dc2626;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -105,16 +117,19 @@
       <button id="add-btn">Add</button>
     </div>
     <ul id="todo-list"></ul>
+    <button id="clear-all-btn">Delete All Tasks</button>
   </div>
 
   <script>
     const todoInput = document.getElementById("todo-input");
     const addBtn = document.getElementById("add-btn");
     const todoList = document.getElementById("todo-list");
+    const clearAllBtn = document.getElementById("clear-all-btn");
 
     // Load saved todos
     document.addEventListener("DOMContentLoaded", loadTodos);
     addBtn.addEventListener("click", addTodo);
+    clearAllBtn.addEventListener("click", clearAll);
 
     function addTodo() {
       const taskText = todoInput.value.trim();
@@ -174,6 +189,11 @@
     function loadTodos() {
       const saved = JSON.parse(localStorage.getItem("todos")) || [];
       saved.forEach(todo => createTodoElement(todo.text, todo.completed));
+    }
+
+    function clearAll() {
+      todoList.innerHTML = "";
+      localStorage.removeItem("todos");
     }
   </script>
 </body>
