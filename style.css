@@ -1,40 +1,18 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Full-page black background */
-html, body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #000000 !important;  /* Force full black */
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-/* Center container */
+/* Make full page background color */
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    background-color: #0d1b2a; /* Dark blue */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
-/* Todo box */
-.todo-container {
-  background: #1a1a1a;   /* dark grey instead of white */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
-  width: 350px;
-}
-
-/* Heading */
-.todo-container h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #00ffcc;
+/* Center the todo app box */
+.container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
 }
