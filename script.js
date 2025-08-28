@@ -9,7 +9,7 @@ function addTask() {
     <span>${taskText}</span>
     <div>
       <button class="complete-btn" onclick="completeTask(this)">✔</button>
-      <button class="delete-btn" onclick="deleteTask(this)">✖</button>
+      <button class="delete-btn" onclick="deleteTask(this)">X</button>
     </div>
   `;
 
@@ -18,11 +18,17 @@ function addTask() {
 }
 
 function completeTask(button) {
-  const li = button.parentElement.parentElement;
+  const li = button.closest("li");
   li.querySelector("span").classList.toggle("completed");
 }
 
 function deleteTask(button) {
-  const li = button.parentElement.parentElement;
+  const li = button.closest("li");
   li.remove();
+}
+
+function deleteAll() {
+  if (confirm("Are you sure you want to delete all tasks?")) {
+    document.getElementById("taskList").innerHTML = "";
+  }
 }
