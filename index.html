@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Floating Todo App with Pending Counter</title>
+<title>Floating Todo App</title>
 <style>
   html, body {
     height: 100%;
@@ -27,12 +27,20 @@
     transition: transform 0.3s;
   }
 
-  .todo-container:hover { transform: translateY(-5px); }
+  .todo-container:hover {
+    transform: translateY(-5px);
+  }
 
-  h2 { text-align: center; margin-bottom: 10px; font-size: 24px; }
-  #pending-count { text-align:center; margin-bottom:20px; font-size:14px; color:#f0f0f0; }
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
 
-  .input-section { display: flex; margin-bottom: 20px; }
+  .input-section {
+    display: flex;
+    margin-bottom: 20px;
+  }
 
   .input-section input {
     flex: 1;
@@ -47,8 +55,13 @@
     transition: background 0.3s;
   }
 
-  .input-section input:focus { background: rgba(255,255,255,0.3); }
-  .input-section input::placeholder { color: #e0e0e0; }
+  .input-section input:focus {
+    background: rgba(255,255,255,0.3);
+  }
+
+  .input-section input::placeholder {
+    color: #e0e0e0;
+  }
 
   .input-section button {
     padding: 12px 20px;
@@ -63,9 +76,15 @@
     transition: background 0.3s, transform 0.2s;
   }
 
-  .input-section button:hover { background: #feb47b; transform: scale(1.05); }
+  .input-section button:hover {
+    background: #feb47b;
+    transform: scale(1.05);
+  }
 
-  ul { list-style: none; padding: 0; }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
 
   li {
     padding: 12px;
@@ -83,7 +102,10 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   }
 
-  li.completed span { text-decoration: line-through; color: #d1d5db; transition: all 0.3s; }
+  li.completed span {
+    text-decoration: line-through;
+    color: #d1d5db;
+  }
 
   .btns button {
     border: none;
@@ -94,9 +116,19 @@
     transition: transform 0.2s;
   }
 
-  .btns button:hover { transform: scale(1.1); }
-  .complete-btn { background: #10b981; color: white; }
-  .delete-btn { background: #ef4444; color: white; }
+  .btns button:hover {
+    transform: scale(1.1);
+  }
+
+  .complete-btn {
+    background: #10b981;
+    color: white;
+  }
+
+  .delete-btn {
+    background: #ef4444;
+    color: white;
+  }
 
   #clear-all-btn {
     width: 100%;
@@ -111,17 +143,33 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     transition: background 0.3s, transform 0.2s;
   }
-  #clear-all-btn:hover { background: #ef4444; transform: scale(1.03); }
 
-  @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); height: 0; margin:0; padding:0; } }
+  #clear-all-btn:hover {
+    background: #ef4444;
+    transform: scale(1.03);
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
 </style>
 </head>
 <body>
-
 <div class="todo-container">
   <h2>My Todo App</h2>
-  <p id="pending-count">Pending tasks: 0</p>
   <div class="input-section">
     <input type="text" id="todo-input" placeholder="Enter a task">
     <button id="add-btn">Add</button>
@@ -131,86 +179,82 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const todoInput = document.getElementById("todo-input");
-  const addBtn = document.getElementById("add-btn");
-  const todoList = document.getElementById("todo-list");
-  const clearAllBtn = document.getElementById("clear-all-btn");
-  const pendingCount = document.getElementById("pending-count");
+const todoInput = document.getElementById("todo-input");
+const addBtn = document.getElementById("add-btn");
+const todoList = document.getElementById("todo-list");
+const clearAllBtn = document.getElementById("clear-all-btn");
 
-  function updatePendingCount() {
-    const pending = document.querySelectorAll("#todo-list li:not(.completed)").length;
-    pendingCount.textContent = Pending tasks: ${pending};
-  }
+document.addEventListener("DOMContentLoaded", loadTodos);
+addBtn.addEventListener("click", addTodo);
+clearAllBtn.addEventListener("click", clearAll);
 
-  function saveTodos() {
-    const todos = [];
-    document.querySelectorAll("#todo-list li").forEach(li => {
-      todos.push({
-        text: li.querySelector("span").textContent,
-        completed: li.classList.contains("completed")
-      });
-    });
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }
+function addTodo() {
+  const taskText = todoInput.value.trim();
+  if (!taskText) return;
+  createTodoElement(taskText, false);
+  saveTodos();
+  todoInput.value = "";
+}
 
-  function createTodoElement(text, completed) {
-    const li = document.createElement("li");
-    const span = document.createElement("span");
-    span.textContent = text;
-    li.appendChild(span);
-    if (completed) li.classList.add("completed");
+function createTodoElement(text, completed) {
+  const li = document.createElement("li");
+  const span = document.createElement("span");
+  span.textContent = text;
+  li.appendChild(span);
+  if (completed) li.classList.add("completed");
 
-    const btnContainer = document.createElement("div");
-    btnContainer.classList.add("btns");
+  const btnContainer = document.createElement("div");
+  btnContainer.classList.add("btns");
 
-    const completeBtn = document.createElement("button");
-    completeBtn.textContent = "Done";
-    completeBtn.classList.add("complete-btn");
-    completeBtn.onclick = () => { li.classList.toggle("completed"); saveTodos(); updatePendingCount(); };
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.onclick = () => {
-      li.style.animation = 'fadeOut 0.3s forwards';
-      setTimeout(() => { li.remove(); saveTodos(); updatePendingCount(); }, 300);
-    };
-
-    btnContainer.appendChild(completeBtn);
-    btnContainer.appendChild(deleteBtn);
-    li.appendChild(btnContainer);
-
-    todoList.appendChild(li);
-  }
-
-  function addTodo() {
-    const taskText = todoInput.value.trim();
-    if (!taskText) return;
-    createTodoElement(taskText, false);
+  const completeBtn = document.createElement("button");
+  completeBtn.textContent = "Done";
+  completeBtn.classList.add("complete-btn");
+  completeBtn.onclick = () => {
+    li.classList.toggle("completed");
     saveTodos();
-    updatePendingCount();
-    todoInput.value = "";
-  }
+  };
 
-  function loadTodos() {
-    const saved = JSON.parse(localStorage.getItem("todos")) || [];
-    saved.forEach(todo => createTodoElement(todo.text, todo.completed));
-    updatePendingCount();
-  }
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.onclick = () => {
+    li.style.animation = 'fadeOut 0.3s forwards';
+    setTimeout(() => {
+      li.remove();
+      saveTodos();
+    }, 300);
+  };
 
-  addBtn.addEventListener("click", addTodo);
-  clearAllBtn.addEventListener("click", () => {
-    document.querySelectorAll("#todo-list li").forEach(li => {
-      li.style.animation = 'fadeOut 0.3s forwards';
-      setTimeout(() => li.remove(), 300);
+  btnContainer.appendChild(completeBtn);
+  btnContainer.appendChild(deleteBtn);
+  li.appendChild(btnContainer);
+
+  todoList.appendChild(li);
+}
+
+function saveTodos() {
+  const todos = [];
+  document.querySelectorAll("#todo-list li").forEach(li => {
+    todos.push({
+      text: li.querySelector("span").textContent,
+      completed: li.classList.contains("completed")
     });
-    localStorage.removeItem("todos");
-    updatePendingCount();
   });
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
 
-  loadTodos();
-});
+function loadTodos() {
+  const saved = JSON.parse(localStorage.getItem("todos")) || [];
+  saved.forEach(todo => createTodoElement(todo.text, todo.completed));
+}
+
+function clearAll() {
+  document.querySelectorAll("#todo-list li").forEach(li => {
+    li.style.animation = 'fadeOut 0.3s forwards';
+    setTimeout(() => li.remove(), 300);
+  });
+  localStorage.removeItem("todos");
+}
 </script>
 </body>
 </html>
