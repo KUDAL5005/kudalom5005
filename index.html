@@ -1,113 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo App with Visible Gradient</title>
+<style>
+  /* Full-page gradient background */
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color: white;
+  }
 
-    .todo-container {
-      background: white;
-      margin-top: 50px;
-      padding: 20px;
-      width: 350px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+  /* Container with some transparency */
+  .todo-container {
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent */
+    margin-top: 50px;
+    padding: 20px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px); /* optional blur effect */
+  }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-    .input-section {
-      display: flex;
-      margin-bottom: 20px;
-    }
+  .input-section {
+    display: flex;
+    margin-bottom: 20px;
+  }
 
-    .input-section input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px 0 0 8px;
-      outline: none;
-    }
+  .input-section input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    outline: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+  }
 
-    .input-section button {
-      padding: 10px 15px;
-      border: none;
-      background: #2563eb;
-      color: white;
-      border-radius: 0 8px 8px 0;
-      cursor: pointer;
-    }
+  .input-section input::placeholder {
+    color: #e0e0e0;
+  }
 
-    ul {
-      list-style: none;
-      padding: 0;
-    }
+  .input-section button {
+    padding: 10px 15px;
+    border: none;
+    background: #ff7e5f;
+    color: white;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+  }
 
-    li {
-      padding: 10px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
 
-    li.completed span {
-      text-decoration: line-through;
-      color: gray;
-    }
+  li {
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
 
-    .btns {
-      display: flex;
-      gap: 8px;
-    }
+  li.completed span {
+    text-decoration: line-through;
+    color: #d1d5db;
+  }
 
-    .btns button {
-      border: none;
-      padding: 5px 8px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-    }
+  .btns button {
+    border: none;
+    padding: 5px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
 
-    .complete-btn {
-      background: #10b981;
-      color: white;
-    }
+  .complete-btn {
+    background: #10b981;
+    color: white;
+  }
 
-    .delete-btn {
-      background: #ef4444;
-      color: white;
-    }
+  .delete-btn {
+    background: #ef4444;
+    color: white;
+  }
 
-    /* Delete all button */
-    #clear-all-btn {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      border: none;
-      background: #dc2626;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  </style>
+  #clear-all-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    background: #dc2626;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
   <div class="todo-container">
@@ -120,81 +123,77 @@
     <button id="clear-all-btn">Delete All Tasks</button>
   </div>
 
-  <script>
-    const todoInput = document.getElementById("todo-input");
-    const addBtn = document.getElementById("add-btn");
-    const todoList = document.getElementById("todo-list");
-    const clearAllBtn = document.getElementById("clear-all-btn");
+<script>
+  const todoInput = document.getElementById("todo-input");
+  const addBtn = document.getElementById("add-btn");
+  const todoList = document.getElementById("todo-list");
+  const clearAllBtn = document.getElementById("clear-all-btn");
 
-    // Load saved todos
-    document.addEventListener("DOMContentLoaded", loadTodos);
-    addBtn.addEventListener("click", addTodo);
-    clearAllBtn.addEventListener("click", clearAll);
+  document.addEventListener("DOMContentLoaded", loadTodos);
+  addBtn.addEventListener("click", addTodo);
+  clearAllBtn.addEventListener("click", clearAll);
 
-    function addTodo() {
-      const taskText = todoInput.value.trim();
-      if (taskText === "") return;
+  function addTodo() {
+    const taskText = todoInput.value.trim();
+    if (!taskText) return;
+    createTodoElement(taskText, false);
+    saveTodos();
+    todoInput.value = "";
+  }
 
-      createTodoElement(taskText, false);
+  function createTodoElement(text, completed) {
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.textContent = text;
+    li.appendChild(span);
+    if (completed) li.classList.add("completed");
+
+    const btnContainer = document.createElement("div");
+    btnContainer.classList.add("btns");
+
+    const completeBtn = document.createElement("button");
+    completeBtn.textContent = "Done";
+    completeBtn.classList.add("complete-btn");
+    completeBtn.onclick = () => {
+      li.classList.toggle("completed");
       saveTodos();
-      todoInput.value = "";
-    }
+    };
 
-    function createTodoElement(text, completed) {
-      const li = document.createElement("li");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.onclick = () => {
+      li.remove();
+      saveTodos();
+    };
 
-      const span = document.createElement("span");
-      span.textContent = text;
-      li.appendChild(span);
+    btnContainer.appendChild(completeBtn);
+    btnContainer.appendChild(deleteBtn);
+    li.appendChild(btnContainer);
 
-      if (completed) li.classList.add("completed");
+    todoList.appendChild(li);
+  }
 
-      const btnContainer = document.createElement("div");
-      btnContainer.classList.add("btns");
-
-      const completeBtn = document.createElement("button");
-      completeBtn.textContent = "Done";
-      completeBtn.classList.add("complete-btn");
-      completeBtn.onclick = () => {
-        li.classList.toggle("completed");
-        saveTodos();
-      };
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "Delete";
-      deleteBtn.classList.add("delete-btn");
-      deleteBtn.onclick = () => {
-        li.remove();
-        saveTodos();
-      };
-
-      btnContainer.appendChild(completeBtn);
-      btnContainer.appendChild(deleteBtn);
-      li.appendChild(btnContainer);
-
-      todoList.appendChild(li);
-    }
-
-    function saveTodos() {
-      const todos = [];
-      document.querySelectorAll("#todo-list li").forEach(li => {
-        todos.push({
-          text: li.querySelector("span").textContent,
-          completed: li.classList.contains("completed")
-        });
+  function saveTodos() {
+    const todos = [];
+    document.querySelectorAll("#todo-list li").forEach(li => {
+      todos.push({
+        text: li.querySelector("span").textContent,
+        completed: li.classList.contains("completed")
       });
-      localStorage.setItem("todos", JSON.stringify(todos));
-    }
+    });
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }
 
-    function loadTodos() {
-      const saved = JSON.parse(localStorage.getItem("todos")) || [];
-      saved.forEach(todo => createTodoElement(todo.text, todo.completed));
-    }
+  function loadTodos() {
+    const saved = JSON.parse(localStorage.getItem("todos")) || [];
+    saved.forEach(todo => createTodoElement(todo.text, todo.completed));
+  }
 
-    function clearAll() {
-      todoList.innerHTML = "";
-      localStorage.removeItem("todos");
-    }
-  </script>
+  function clearAll() {
+    todoList.innerHTML = "";
+    localStorage.removeItem("todos");
+  }
+</script>
 </body>
 </html>
