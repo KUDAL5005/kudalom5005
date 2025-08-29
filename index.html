@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Todo App with Visible Gradient</title>
+<title>Animated Todo App</title>
 <style>
   /* Full-page gradient background */
   html, body {
@@ -17,15 +17,15 @@
     color: white;
   }
 
-  /* Container with some transparency */
+  /* Container */
   .todo-container {
-    background: rgba(0, 0, 0, 0.5); /* semi-transparent */
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
     margin-top: 50px;
     padding: 20px;
     width: 350px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    backdrop-filter: blur(5px); /* optional blur effect */
   }
 
   h2 {
@@ -59,6 +59,11 @@
     color: white;
     border-radius: 0 8px 8px 0;
     cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .input-section button:hover {
+    background: #feb47b;
   }
 
   ul {
@@ -75,11 +80,16 @@
     justify-content: space-between;
     align-items: center;
     color: white;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeIn 0.3s forwards;
+    transition: all 0.3s ease;
   }
 
   li.completed span {
     text-decoration: line-through;
     color: #d1d5db;
+    transition: 0.3s;
   }
 
   .btns button {
@@ -110,90 +120,115 @@
     border-radius: 8px;
     cursor: pointer;
   }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
 </style>
 </head>
 <body>
-  <div class="todo-container">
-    <h2>My Todo App</h2>
-    <div class="input-section">
-      <input type="text" id="todo-input" placeholder="Enter a task">
-      <button id="add-btn">Add</button>
-    </div>
-    <ul id="todo-list"></ul>
-    <button id="clear-all-btn">Delete All Tasks</button>
+<div class="todo-container">
+  <h2>My Todo App</h2>
+  <div class="input-section">
+    <input type="text" id="todo-input" placeholder="Enter a task">
+    <button id="add-btn">Add</button>
   </div>
+  <ul id="todo-list"></ul>
+  <button id="clear-all-btn">Delete All Tasks</button>
+</div>
 
 <script>
-  const todoInput = document.getElementById("todo-input");
-  const addBtn = document.getElementById("add-btn");
-  const todoList = document.getElementById("todo-list");
-  const clearAllBtn = document.getElementById("clear-all-btn");
+const todoInput = document.getElementById("todo-input");
+const addBtn = document.getElementById("add-btn");
+const todoList = document.getElementById("todo-list");
+const clearAllBtn = document.getElementById("clear-all-btn");
 
-  document.addEventListener("DOMContentLoaded", loadTodos);
-  addBtn.addEventListener("click", addTodo);
-  clearAllBtn.addEventListener("click", clearAll);
+document.addEventListener("DOMContentLoaded", loadTodos);
+addBtn.addEventListener("click", addTodo);
+clearAllBtn.addEventListener("click", clearAll);
 
-  function addTodo() {
-    const taskText = todoInput.value.trim();
-    if (!taskText) return;
-    createTodoElement(taskText, false);
+function addTodo() {
+  const taskText = todoInput.value.trim();
+  if (!taskText) return;
+  createTodoElement(taskText, false);
+  saveTodos();
+  todoInput.value = "";
+}
+
+function createTodoElement(text, completed) {
+  const li = document.createElement("li");
+
+  const span = document.createElement("span");
+  span.textContent = text;
+  li.appendChild(span);
+
+  if (completed) li.classList.add("completed");
+
+  const btnContainer = document.createElement("div");
+  btnContainer.classList.add("btns");
+
+  const completeBtn = document.createElement("button");
+  completeBtn.textContent = "Done";
+  completeBtn.classList.add("complete-btn");
+  completeBtn.onclick = () => {
+    li.classList.toggle("completed");
     saveTodos();
-    todoInput.value = "";
-  }
+  };
 
-  function createTodoElement(text, completed) {
-    const li = document.createElement("li");
-    const span = document.createElement("span");
-    span.textContent = text;
-    li.appendChild(span);
-    if (completed) li.classList.add("completed");
-
-    const btnContainer = document.createElement("div");
-    btnContainer.classList.add("btns");
-
-    const completeBtn = document.createElement("button");
-    completeBtn.textContent = "Done";
-    completeBtn.classList.add("complete-btn");
-    completeBtn.onclick = () => {
-      li.classList.toggle("completed");
-      saveTodos();
-    };
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.onclick = () => {
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.onclick = () => {
+    li.style.animation = 'fadeOut 0.3s forwards';
+    setTimeout(() => {
       li.remove();
       saveTodos();
-    };
+    }, 300);
+  };
 
-    btnContainer.appendChild(completeBtn);
-    btnContainer.appendChild(deleteBtn);
-    li.appendChild(btnContainer);
+  btnContainer.appendChild(completeBtn);
+  btnContainer.appendChild(deleteBtn);
+  li.appendChild(btnContainer);
 
-    todoList.appendChild(li);
-  }
+  todoList.appendChild(li);
+}
 
-  function saveTodos() {
-    const todos = [];
-    document.querySelectorAll("#todo-list li").forEach(li => {
-      todos.push({
-        text: li.querySelector("span").textContent,
-        completed: li.classList.contains("completed")
-      });
+function saveTodos() {
+  const todos = [];
+  document.querySelectorAll("#todo-list li").forEach(li => {
+    todos.push({
+      text: li.querySelector("span").textContent,
+      completed: li.classList.contains("completed")
     });
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }
+  });
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
 
-  function loadTodos() {
-    const saved = JSON.parse(localStorage.getItem("todos")) || [];
-    saved.forEach(todo => createTodoElement(todo.text, todo.completed));
-  }
+function loadTodos() {
+  const saved = JSON.parse(localStorage.getItem("todos")) || [];
+  saved.forEach(todo => createTodoElement(todo.text, todo.completed));
+}
 
-  function clearAll() {
-    todoList.innerHTML = "";
-    localStorage.removeItem("todos");
-  }
+function clearAll() {
+  document.querySelectorAll("#todo-list li").forEach(li => {
+    li.style.animation = 'fadeOut 0.3s forwards';
+    setTimeout(() => li.remove(), 300);
+  });
+  localStorage.removeItem("todos");
+}
 </script>
 </body>
 </html>
