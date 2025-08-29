@@ -5,141 +5,196 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo App</title>
   <style>
-    /* ===== Body & Background ===== */
     body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start;
+      min-height: 100vh;
     }
 
-    /* ===== Container ===== */
     .todo-container {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 30px;
-      border-radius: 15px;
+      background: white;
+      margin-top: 50px;
+      padding: 20px;
       width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h1 {
+    h2 {
       text-align: center;
       margin-bottom: 20px;
     }
 
-    input[type="text"] {
-      width: 70%;
+    .input-section {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .input-section input {
+      flex: 1;
       padding: 10px;
-      border-radius: 8px;
-      border: none;
+      border: 1px solid #ddd;
+      border-radius: 8px 0 0 8px;
       outline: none;
-      font-size: 16px;
     }
 
-    button {
+    .input-section button {
       padding: 10px 15px;
-      margin-left: 10px;
       border: none;
-      border-radius: 8px;
-      background-color: #ff7e5f;
+      background: #2563eb;
       color: white;
-      font-size: 16px;
+      border-radius: 0 8px 8px 0;
       cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background-color: #feb47b;
     }
 
     ul {
       list-style: none;
       padding: 0;
-      margin-top: 20px;
     }
 
     li {
-      background: rgba(255,255,255,0.1);
-      padding: 12px 15px;
-      margin-bottom: 10px;
+      padding: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: 0.3s;
     }
 
-    li.completed {
+    li.completed span {
       text-decoration: line-through;
-      opacity: 0.6;
+      color: gray;
     }
 
-    li button {
-      background-color: #ff4e50;
-      padding: 6px 10px;
+    .btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btns button {
+      border: none;
+      padding: 5px 8px;
       border-radius: 6px;
-      font-size: 14px;
+      cursor: pointer;
+      font-size: 12px;
     }
 
-    li button:hover {
-      background-color: #ff7878;
+    .complete-btn {
+      background: #10b981;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    /* Delete all button */
+    #clear-all-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: none;
+      background: #dc2626;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-
   <div class="todo-container">
-    <h1>Todo App</h1>
-    <div>
-      <input type="text" id="todo-input" placeholder="Add a new task...">
+    <h2>My Todo App</h2>
+    <div class="input-section">
+      <input type="text" id="todo-input" placeholder="Enter a task">
       <button id="add-btn">Add</button>
     </div>
     <ul id="todo-list"></ul>
+    <button id="clear-all-btn">Delete All Tasks</button>
   </div>
 
   <script>
-    const input = document.getElementById('todo-input');
-    const addBtn = document.getElementById('add-btn');
-    const todoList = document.getElementById('todo-list');
+    const todoInput = document.getElementById("todo-input");
+    const addBtn = document.getElementById("add-btn");
+    const todoList = document.getElementById("todo-list");
+    const clearAllBtn = document.getElementById("clear-all-btn");
 
-    // Function to add new task
-    function addTask() {
-      const taskText = input.value.trim();
-      if (taskText === '') return;
+    // Load saved todos
+    document.addEventListener("DOMContentLoaded", loadTodos);
+    addBtn.addEventListener("click", addTodo);
+    clearAllBtn.addEventListener("click", clearAll);
 
-      const li = document.createElement('li');
+    function addTodo() {
+      const taskText = todoInput.value.trim();
+      if (taskText === "") return;
 
-      const span = document.createElement('span');
-      span.textContent = taskText;
-      span.style.cursor = 'pointer';
-      span.addEventListener('click', () => {
-        li.classList.toggle('completed');
-      });
-
-      const delBtn = document.createElement('button');
-      delBtn.textContent = 'Delete';
-      delBtn.addEventListener('click', () => li.remove());
-
-      li.appendChild(span);
-      li.appendChild(delBtn);
-      todoList.appendChild(li);
-
-      input.value = '';
+      createTodoElement(taskText, false);
+      saveTodos();
+      todoInput.value = "";
     }
 
-    // Add task on button click
-    addBtn.addEventListener('click', addTask);
+    function createTodoElement(text, completed) {
+      const li = document.createElement("li");
 
-    // Add task on Enter key
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') addTask();
-    });
+      const span = document.createElement("span");
+      span.textContent = text;
+      li.appendChild(span);
+
+      if (completed) li.classList.add("completed");
+
+      const btnContainer = document.createElement("div");
+      btnContainer.classList.add("btns");
+
+      const completeBtn = document.createElement("button");
+      completeBtn.textContent = "Done";
+      completeBtn.classList.add("complete-btn");
+      completeBtn.onclick = () => {
+        li.classList.toggle("completed");
+        saveTodos();
+      };
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.classList.add("delete-btn");
+      deleteBtn.onclick = () => {
+        li.remove();
+        saveTodos();
+      };
+
+      btnContainer.appendChild(completeBtn);
+      btnContainer.appendChild(deleteBtn);
+      li.appendChild(btnContainer);
+
+      todoList.appendChild(li);
+    }
+
+    function saveTodos() {
+      const todos = [];
+      document.querySelectorAll("#todo-list li").forEach(li => {
+        todos.push({
+          text: li.querySelector("span").textContent,
+          completed: li.classList.contains("completed")
+        });
+      });
+      localStorage.setItem("todos", JSON.stringify(todos));
+    }
+
+    function loadTodos() {
+      const saved = JSON.parse(localStorage.getItem("todos")) || [];
+      saved.forEach(todo => createTodoElement(todo.text, todo.completed));
+    }
+
+    function clearAll() {
+      todoList.innerHTML = "";
+      localStorage.removeItem("todos");
+    }
   </script>
-
 </body>
 </html>
